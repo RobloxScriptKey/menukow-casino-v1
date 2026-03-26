@@ -24,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -49,9 +48,7 @@
             display: flex; align-items: center; gap: 5px; cursor: pointer;
             transition: 0.2s;
         }
-        .btn-login:hover { opacity: 0.9; }
 
-        /* GAMES SECTION */
         .main-content { padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
         
         .game-card {
@@ -59,7 +56,6 @@
             border-radius: 28px;
             padding: 24px;
             border: 1px solid rgba(255,255,255,0.03);
-            position: relative;
         }
 
         .game-icon {
@@ -88,7 +84,6 @@
             font-weight: 700;
         }
 
-        /* MODAL AUTH */
         #authModal {
             display: none;
             position: fixed;
@@ -109,7 +104,6 @@
             border: 1px solid rgba(0, 133, 255, 0.3);
         }
 
-        /* FOOTER */
         footer { padding: 30px 16px; text-align: center; }
         .footer-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
         .footer-nav a { color: var(--text-gray); text-decoration: none; font-size: 12px; }
@@ -161,14 +155,13 @@
     </div>
 </div>
 
-<!-- ОКНО ВХОДА -->
 <div id="authModal">
     <div class="modal-content">
         <h2 style="margin-top:0;">Авторизация</h2>
         <p style="color:var(--text-gray); font-size: 14px; margin-bottom: 25px;">Войдите через Telegram для сохранения баланса</p>
         
-        <!-- ОФИЦИАЛЬНЫЙ ВИДЖЕТ -->
         <div id="tg-widget">
+            <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
             <script async src="https://telegram.org" 
                 data-telegram-login="MenukowBot" 
                 data-size="large" 
@@ -194,29 +187,21 @@
 </div>
 
 <script>
-    // Функция открытия/закрытия модалки
     function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
     function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
 
-    // ФУНКЦИЯ ПОСЛЕ УСПЕШНОГО ВХОДА
     function onTelegramAuth(user) {
-        closeAuth(); // Закрываем окно
-        
-        // Меняем кнопку Войти на имя пользователя
+        closeAuth();
         const loginBtn = document.getElementById('loginBtn');
         loginBtn.innerHTML = `👤 ${user.first_name}`;
         loginBtn.style.background = "rgba(255,255,255,0.05)";
         loginBtn.style.border = "1px solid #30363d";
         loginBtn.onclick = function() { alert('Ваш ID: ' + user.id); };
 
-        // Сохраняем данные в браузере (временно)
         localStorage.setItem('isLogged', 'true');
         localStorage.setItem('userName', user.first_name);
-        
-        console.log('Пользователь вошел:', user);
     }
 
-    // Проверка логина при загрузке страницы
     window.onload = function() {
         if(localStorage.getItem('isLogged') === 'true') {
             const name = localStorage.getItem('userName');
