@@ -1,104 +1,96 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MENUKOW — Игры Онлайн</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENUKOW</title>
 
-    <style>
-        :root {
-            --bg-dark: #0a0e17;
-            --card-bg: #141a26;
-            --accent-blue: #007bff;
-            --text-white: #ffffff;
-            --text-gray: #8b949e;
-            --green-badge: #00e676;
-        }
+<style>
+body {
+    margin:0;
+    font-family:Arial;
+    background:#0a0e17;
+    color:white;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            margin: 0;
-            padding-bottom: 70px;
-        }
+header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:#111827;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: rgba(10, 14, 23, 0.95);
-        }
+.logo {color:#00a2ff;font-weight:bold;font-size:18px;}
 
-        .logo {
-            font-size: 20px;
-            font-weight: 900;
-            color: #00a2ff;
-        }
+#userBox {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .btn-login {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+#avatar {
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    display:none;
+}
 
-        .main-content {
-            padding: 20px 16px;
-        }
+button {
+    padding:8px 14px;
+    border:none;
+    border-radius:8px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
 
-        .game-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
+.main {
+    padding:20px;
+}
 
-        /* MODAL */
-        #authModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-        }
+.card {
+    background:#141a26;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
 
-        .modal-content {
-            background: #161b28;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 320px;
-        }
-    </style>
+.footer {
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    color:gray;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">MENUKOW</div>
-    <button class="btn-login" id="loginBtn" onclick="openAuth()">➔ Войти</button>
+<div class="logo">MENUKOW</div>
+
+<div id="userBox">
+    <img id="avatar">
+    <button id="loginBtn" onclick="openAuth()">Войти</button>
+</div>
 </header>
 
-<div class="main-content">
-    <div class="game-card">🃏 Блэкджек</div>
-    <div class="game-card">🚀 Краш</div>
-    <div class="game-card">💣 Мины</div>
+<div class="main">
+<div class="card" onclick="alert('Рулетка')">🎯 Рулетка</div>
+<div class="card" onclick="alert('Блэкджек')">🃏 Блэкджек</div>
+<div class="card" onclick="alert('Дайс')">🎲 Дайс</div>
+<div class="card" onclick="alert('Мины')">💣 Мины</div>
+<div class="card" onclick="alert('Краш')">🚀 Краш</div>
 </div>
 
 <!-- МОДАЛКА -->
-<div id="authModal">
-    <div class="modal-content">
-        <h2>Авторизация</h2>
-        <p style="color:gray;">Войдите через Telegram</p>
+<div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;">
+    <div style="background:#161b28;padding:25px;border-radius:15px;text-align:center;">
 
-        <!-- ✅ ПРАВИЛЬНАЯ КНОПКА TELEGRAM -->
+        <h3>Вход через Telegram</h3>
+
         <script async src="https://telegram.org/js/telegram-widget.js?22"
             data-telegram-login="MenukowBot"
             data-size="large"
@@ -107,37 +99,74 @@
         </script>
 
         <br><br>
-        <button onclick="closeAuth()">Отмена</button>
+        <button onclick="closeAuth()">Закрыть</button>
+
     </div>
 </div>
 
+<div class="footer">
+<a href="https://t.me/MenukowFAQ">FAQ</a> |
+<a href="https://t.me/MenukowPOL">Соглашение</a> |
+<a href="https://t.me/WIN1XBETUK">Поддержка</a>
+<br><br>
+Играйте ответственно 18+
+</div>
+
 <script>
-    function openAuth() {
-        document.getElementById('authModal').style.display = 'flex';
+function openAuth(){
+    document.getElementById('authModal').style.display='flex';
+}
+
+function closeAuth(){
+    document.getElementById('authModal').style.display='none';
+}
+
+function onTelegramAuth(user){
+    closeAuth();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const avatar = document.getElementById('avatar');
+
+    loginBtn.innerText = user.first_name;
+
+    // генерация аватарки
+    const letter = user.first_name.charAt(0).toUpperCase();
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 100;
+    canvas.height = 100;
+
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#0085ff";
+    ctx.fillRect(0,0,100,100);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "50px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(letter, 50, 55);
+
+    avatar.src = canvas.toDataURL();
+    avatar.style.display = "block";
+
+    localStorage.setItem('name', user.first_name);
+    localStorage.setItem('avatar', avatar.src);
+}
+
+window.onload = function(){
+    const name = localStorage.getItem('name');
+    const avatarSrc = localStorage.getItem('avatar');
+
+    if(name){
+        document.getElementById('loginBtn').innerText = name;
     }
 
-    function closeAuth() {
-        document.getElementById('authModal').style.display = 'none';
+    if(avatarSrc){
+        const avatar = document.getElementById('avatar');
+        avatar.src = avatarSrc;
+        avatar.style.display = "block";
     }
-
-    function onTelegramAuth(user) {
-        closeAuth();
-
-        const loginBtn = document.getElementById('loginBtn');
-        loginBtn.innerHTML = "👤 " + user.first_name;
-
-        localStorage.setItem('isLogged', 'true');
-        localStorage.setItem('userName', user.first_name);
-
-        alert('Привет, ' + user.first_name);
-    }
-
-    window.onload = function() {
-        if (localStorage.getItem('isLogged') === 'true') {
-            const name = localStorage.getItem('userName');
-            document.getElementById('loginBtn').innerHTML = "👤 " + name;
-        }
-    }
+}
 </script>
 
 </body>
