@@ -47,6 +47,7 @@
             background: var(--accent-blue); color: white; border: none; 
             padding: 8px 16px; border-radius: 8px; font-weight: 600; 
             display: flex; align-items: center; gap: 5px; cursor: pointer;
+            transition: 0.2s;
         }
 
         /* GAMES SECTION */
@@ -57,6 +58,7 @@
             border-radius: 28px;
             padding: 24px;
             border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
         }
 
         .game-icon {
@@ -163,8 +165,8 @@
         <h2 style="margin-top:0;">Авторизация</h2>
         <p style="color:var(--text-gray); font-size: 14px; margin-bottom: 25px;">Войдите через Telegram для сохранения баланса</p>
         
-        <!-- ТУТ ТЕПЕРЬ ПОЯВИТСЯ КНОПКА -->
-        <div id="tg-widget-area" style="display: flex; justify-content: center;">
+        <!-- ЦЕНТРИРОВАННАЯ КНОПКА ТЕЛЕГРАМ -->
+        <div style="display: flex; justify-content: center;">
             <script async src="https://telegram.org" 
                 data-telegram-login="MenukowBot" 
                 data-size="large" 
@@ -172,7 +174,7 @@
                 data-request-access="write"></script>
         </div>
 
-        <button onclick="closeAuth()" style="margin-top:25px; background:transparent; color:var(--text-gray); border:none; cursor:pointer; font-size: 14px;">Отмена</button>
+        <button onclick="closeAuth()" style="margin-top:25px; background:transparent; color:var(--text-gray); border:none; cursor:pointer; font-size: 16px;">Отмена</button>
     </div>
 </div>
 
@@ -193,6 +195,7 @@
     function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
     function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
 
+    // ФУНКЦИЯ ПОСЛЕ УСПЕШНОГО ВХОДА
     function onTelegramAuth(user) {
         closeAuth();
         const loginBtn = document.getElementById('loginBtn');
@@ -202,9 +205,10 @@
         
         localStorage.setItem('isLogged', 'true');
         localStorage.setItem('userName', user.first_name);
-        alert('Вы вошли как ' + user.first_name);
+        alert('Успешный вход! Привет, ' + user.first_name);
     }
 
+    // Проверка логина при загрузке страницы
     window.onload = function() {
         if(localStorage.getItem('isLogged') === 'true') {
             const name = localStorage.getItem('userName');
