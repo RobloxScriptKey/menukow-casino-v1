@@ -2,66 +2,36 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MENUKOW</title>
+<title>MENUKOW CASINO</title>
 
 <style>
-body {
-    margin:0;
-    font-family:Arial;
-    background:#0a0e17;
-    color:white;
+body {margin:0;font-family:Arial;background:#0a0e17;color:white;}
+header {display:flex;justify-content:space-between;padding:15px;background:#111827;}
+.logo {color:#00a2ff;font-weight:bold;}
+.balance {color:#00e676;}
+
+.games {display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px;}
+.card {background:#141a26;padding:20px;border-radius:15px;text-align:center;cursor:pointer;}
+
+#game {padding:20px;}
+
+button {padding:10px;border:none;border-radius:10px;margin:5px;}
+input {padding:8px;border-radius:8px;border:none;}
+
+.grid {
+display:grid;
+grid-template-columns:repeat(5,50px);
+gap:5px;
+margin-top:10px;
 }
-
-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-    background:#111827;
-}
-
-.logo {color:#00a2ff;font-weight:bold;font-size:18px;}
-
-#userBox {
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-#avatar {
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    display:none;
-}
-
-button {
-    padding:8px 14px;
-    border:none;
-    border-radius:8px;
-    background:#007bff;
-    color:white;
-    cursor:pointer;
-}
-
-.main {
-    padding:20px;
-}
-
-.card {
-    background:#141a26;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:10px;
-    cursor:pointer;
-}
-
-.footer {
-    text-align:center;
-    padding:20px;
-    font-size:12px;
-    color:gray;
+.cell {
+width:50px;height:50px;
+background:#1c2230;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border-radius:6px;
 }
 </style>
 </head>
@@ -70,102 +40,159 @@ button {
 
 <header>
 <div class="logo">MENUKOW</div>
-
-<div id="userBox">
-    <img id="avatar">
-    <button id="loginBtn" onclick="openAuth()">Войти</button>
-</div>
+<div class="balance">💰 <span id="bal">1000</span></div>
 </header>
 
-<div class="main">
-<div class="card" onclick="alert('Рулетка')">🎯 Рулетка</div>
-<div class="card" onclick="alert('Блэкджек')">🃏 Блэкджек</div>
-<div class="card" onclick="alert('Дайс')">🎲 Дайс</div>
-<div class="card" onclick="alert('Мины')">💣 Мины</div>
-<div class="card" onclick="alert('Краш')">🚀 Краш</div>
+<div class="games">
+<div class="card" onclick="openGame('dice')">🎲 Дайс</div>
+<div class="card" onclick="openGame('mines')">💣 Мины</div>
+<div class="card" onclick="openGame('crash')">🚀 Краш</div>
 </div>
 
-<!-- МОДАЛКА -->
-<div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;">
-    <div style="background:#161b28;padding:25px;border-radius:15px;text-align:center;">
-
-        <h3>Вход через Telegram</h3>
-
-        <script async src="https://telegram.org/js/telegram-widget.js?22"
-            data-telegram-login="MenukowBot"
-            data-size="large"
-            data-onauth="onTelegramAuth(user)"
-            data-request-access="write">
-        </script>
-
-        <br><br>
-        <button onclick="closeAuth()">Закрыть</button>
-
-    </div>
-</div>
-
-<div class="footer">
-<a href="https://t.me/MenukowFAQ">FAQ</a> |
-<a href="https://t.me/MenukowPOL">Соглашение</a> |
-<a href="https://t.me/WIN1XBETUK">Поддержка</a>
-<br><br>
-Играйте ответственно 18+
-</div>
+<div id="game"></div>
 
 <script>
-function openAuth(){
-    document.getElementById('authModal').style.display='flex';
+let balance = 1000;
+
+function updateBal(){
+ document.getElementById('bal').innerText = balance;
 }
 
-function closeAuth(){
-    document.getElementById('authModal').style.display='none';
+// ===== ДАЙС =====
+function diceUI(){
+ document.getElementById('game').innerHTML = `
+ <h2>🎲 Дайс</h2>
+ Ставка <input id="bet"><br>
+ Шанс (1-100) <input id="chance"><br>
+ <button onclick="playDice()">Играть</button>
+ `;
 }
 
-function onTelegramAuth(user){
-    closeAuth();
+function playDice(){
+ let bet = Number(document.getElementById('bet').value);
+ let chance = Number(document.getElementById('chance').value);
 
-    const loginBtn = document.getElementById('loginBtn');
-    const avatar = document.getElementById('avatar');
+ if(bet > balance) return alert("Нет денег");
 
-    loginBtn.innerText = user.first_name;
+ balance -= bet;
 
-    // генерация аватарки
-    const letter = user.first_name.charAt(0).toUpperCase();
+ let roll = Math.floor(Math.random()*100)+1;
 
-    const canvas = document.createElement("canvas");
-    canvas.width = 100;
-    canvas.height = 100;
+ alert("Выпало: "+roll);
 
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#0085ff";
-    ctx.fillRect(0,0,100,100);
+ if(roll < chance){
+     balance += bet*2;
+     alert("Выигрыш!");
+ } else {
+     alert("Проигрыш");
+ }
 
-    ctx.fillStyle = "#fff";
-    ctx.font = "50px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(letter, 50, 55);
-
-    avatar.src = canvas.toDataURL();
-    avatar.style.display = "block";
-
-    localStorage.setItem('name', user.first_name);
-    localStorage.setItem('avatar', avatar.src);
+ updateBal();
 }
 
-window.onload = function(){
-    const name = localStorage.getItem('name');
-    const avatarSrc = localStorage.getItem('avatar');
+// ===== МИНЫ =====
+let minesArr = [];
+let opened = 0;
 
-    if(name){
-        document.getElementById('loginBtn').innerText = name;
-    }
+function minesUI(){
+ document.getElementById('game').innerHTML = `
+ <h2>💣 Мины</h2>
+ Ставка <input id="bet"><br>
+ Мин (1-24) <input id="mines"><br>
+ <button onclick="startMines()">Начать</button>
+ <div class="grid" id="grid"></div>
+ `;
+}
 
-    if(avatarSrc){
-        const avatar = document.getElementById('avatar');
-        avatar.src = avatarSrc;
-        avatar.style.display = "block";
-    }
+function startMines(){
+ let bet = Number(document.getElementById('bet').value);
+ let minesCount = Number(document.getElementById('mines').value);
+
+ if(bet > balance) return alert("Нет денег");
+
+ balance -= bet;
+ opened = 0;
+
+ minesArr = Array(25).fill(0);
+
+ for(let i=0;i<minesCount;i++){
+     let r;
+     do { r = Math.floor(Math.random()*25); }
+     while(minesArr[r]===1);
+     minesArr[r]=1;
+ }
+
+ const grid = document.getElementById('grid');
+ grid.innerHTML = "";
+
+ for(let i=0;i<25;i++){
+     const cell = document.createElement("div");
+     cell.className="cell";
+     cell.onclick = ()=>clickMine(i, cell, bet);
+     grid.appendChild(cell);
+ }
+}
+
+function clickMine(i, el, bet){
+ if(minesArr[i]===1){
+     el.innerHTML="💣";
+     alert("Проигрыш");
+     return;
+ }
+
+ el.innerHTML="✅";
+ opened++;
+
+ let win = bet * (1 + opened*0.2);
+ balance += win;
+
+ updateBal();
+}
+
+// ===== КРАШ =====
+function crashUI(){
+ document.getElementById('game').innerHTML = `
+ <h2>🚀 Краш</h2>
+ Ставка <input id="bet"><br>
+ <button onclick="playCrash()">Играть</button>
+ `;
+}
+
+function playCrash(){
+ let bet = Number(document.getElementById('bet').value);
+
+ if(bet > balance) return alert("Нет денег");
+
+ balance -= bet;
+
+ let x = 1;
+ let interval = setInterval(()=>{
+     x += 0.1;
+
+     document.getElementById('game').innerHTML = `
+     <h2>🚀 x${x.toFixed(2)}</h2>
+     <button onclick="cashout(${bet}, ${x}, this)">Забрать</button>
+     `;
+
+     if(Math.random() < 0.05){
+         clearInterval(interval);
+         alert("💥 Сгорел");
+     }
+
+ },100);
+}
+
+function cashout(bet, x){
+ balance += bet * x;
+ updateBal();
+ alert("Ты забрал x"+x.toFixed(2));
+}
+
+// ===== НАВИГАЦИЯ =====
+function openGame(name){
+ if(name==='dice') diceUI();
+ if(name==='mines') minesUI();
+ if(name==='crash') crashUI();
 }
 </script>
 
