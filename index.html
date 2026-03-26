@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MENUKOW</title>
+    <title>MENUKOW — Игры Онлайн</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
@@ -21,6 +21,7 @@
             color: var(--text-white);
             margin: 0;
             padding-bottom: 70px;
+            overflow-x: hidden;
         }
 
         /* HEADER */
@@ -29,23 +30,26 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 16px;
-            background: var(--bg-dark);
+            background: rgba(10, 14, 23, 0.95);
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
         .logo { font-size: 20px; font-weight: 900; color: #00a2ff; letter-spacing: 1px; }
         
         .header-tools { display: flex; gap: 8px; align-items: center; }
         .currency-switch { display: flex; background: #1c2230; border-radius: 6px; padding: 2px; }
-        .curr-btn { padding: 6px 12px; border: none; background: transparent; color: white; cursor: pointer; font-size: 14px; }
+        .curr-btn { padding: 6px 12px; border: none; background: transparent; color: white; cursor: pointer; font-size: 14px; font-weight: 600; }
         .curr-btn.active { background: var(--accent-blue); border-radius: 4px; }
 
         .btn-login { 
             background: var(--accent-blue); color: white; border: none; 
-            padding: 8px 14px; border-radius: 8px; font-weight: 600; 
-            display: flex; align-items: center; gap: 5px;
+            padding: 8px 16px; border-radius: 8px; font-weight: 600; 
+            display: flex; align-items: center; gap: 5px; cursor: pointer;
+            transition: 0.2s;
         }
+        .btn-login:hover { opacity: 0.9; }
 
         /* GAMES SECTION */
         .main-content { padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
@@ -55,6 +59,7 @@
             border-radius: 28px;
             padding: 24px;
             border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
         }
 
         .game-icon {
@@ -83,28 +88,40 @@
             font-weight: 700;
         }
 
-        /* FOOTER & LINKS */
-        footer { padding: 30px 16px; text-align: center; }
-        .footer-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
-        .footer-nav a { color: var(--text-gray); text-decoration: none; font-size: 12px; }
-        .support-btn { color: #00a2ff !important; font-weight: bold; }
-        .resp-18 { font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* ALFACI BOTTOM BAR */
-        .bottom-bar {
+        /* MODAL AUTH */
+        #authModal {
+            display: none;
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(90deg, #8a4fff, #0085ff);
-            color: white;
-            text-align: center;
-            padding: 12px 0;
-            font-size: 14px;
-            font-weight: 700;
-            display: flex;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: #161b28;
+            padding: 30px;
+            border-radius: 24px;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            border: 1px solid rgba(0, 133, 255, 0.3);
+        }
+
+        /* FOOTER */
+        footer { padding: 30px 16px; text-align: center; }
+        .footer-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .footer-nav a { color: var(--text-gray); text-decoration: none; font-size: 12px; }
+        .support-link { color: #00a2ff !important; font-weight: bold; }
+        .resp-18 { font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; margin-top: 15px; }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0; width: 100%;
+            background: linear-gradient(90deg, #8a4fff, #0085ff);
+            color: white; text-align: center;
+            padding: 12px 0; font-size: 14px; font-weight: 700;
         }
     </style>
 </head>
@@ -117,12 +134,11 @@
             <button class="curr-btn active" id="rub-btn" onclick="switchCurr('rub')">₽</button>
             <button class="curr-btn" id="usd-btn" onclick="switchCurr('usd')">$</button>
         </div>
-        <button class="btn-login" onclick="alert('Вход через TG/Gmail')">➔ Войти</button>
+        <button class="btn-login" id="loginBtn" onclick="openAuth()">➔ Войти</button>
     </div>
 </header>
 
 <div class="main-content">
-    <!-- Блэкджек -->
     <div class="game-card">
         <div class="game-icon">🃏</div>
         <h2>Блэкджек</h2>
@@ -130,28 +146,45 @@
         <div class="badge">x2.2 Blackjack</div>
     </div>
 
-    <!-- Дайс -->
     <div class="game-card">
-        <div class="game-icon">🎲</div>
-        <h2>Дайс</h2>
-        <p>Выбери свой процент и попробуй угадать число от 1 до 100!</p>
-        <div class="badge">До х99</div>
+        <div class="game-icon">🚀</div>
+        <h2>Краш</h2>
+        <p>Следи за самолетом и забирай выигрыш вовремя. Иксы до 100x!</p>
+        <div class="badge">ONLINE</div>
     </div>
 
-    <!-- Мины -->
     <div class="game-card">
         <div class="game-icon">💣</div>
         <h2>Мины</h2>
-        <p>Поле 5x5. Ставь ставку и количество мин до 24. Удачи!</p>
-        <div class="badge">Поле 5x5</div>
+        <p>Поле 5x5. Ставь количество мин и не ошибись!</p>
+        <div class="badge">До 24 мин</div>
+    </div>
+</div>
+
+<!-- ОКНО ВХОДА -->
+<div id="authModal">
+    <div class="modal-content">
+        <h2 style="margin-top:0;">Авторизация</h2>
+        <p style="color:var(--text-gray); font-size: 14px; margin-bottom: 25px;">Войдите через Telegram для сохранения баланса</p>
+        
+        <!-- ОФИЦИАЛЬНЫЙ ВИДЖЕТ -->
+        <div id="tg-widget">
+            <script async src="https://telegram.org" 
+                data-telegram-login="MenukowBot" 
+                data-size="large" 
+                data-onauth="onTelegramAuth(user)" 
+                data-request-access="write"></script>
+        </div>
+
+        <button onclick="closeAuth()" style="margin-top:25px; background:transparent; color:var(--text-gray); border:none; cursor:pointer; font-size: 14px;">Отмена</button>
     </div>
 </div>
 
 <footer>
     <div class="footer-nav">
-        <a href="https://t.me">FAQ</a>
-        <a href="https://t.me">Соглашение</a>
-        <a href="https://t.me" class="support-btn">Поддержка</a>
+        <a href="https://t.me" target="_blank">FAQ</a>
+        <a href="https://t.me" target="_blank">Соглашение</a>
+        <a href="https://t.me" target="_blank" class="support-link">Поддержка</a>
     </div>
     <div class="resp-18">Играйте ответственно 18+</div>
 </footer>
@@ -161,6 +194,39 @@
 </div>
 
 <script>
+    // Функция открытия/закрытия модалки
+    function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
+
+    // ФУНКЦИЯ ПОСЛЕ УСПЕШНОГО ВХОДА
+    function onTelegramAuth(user) {
+        closeAuth(); // Закрываем окно
+        
+        // Меняем кнопку Войти на имя пользователя
+        const loginBtn = document.getElementById('loginBtn');
+        loginBtn.innerHTML = `👤 ${user.first_name}`;
+        loginBtn.style.background = "rgba(255,255,255,0.05)";
+        loginBtn.style.border = "1px solid #30363d";
+        loginBtn.onclick = function() { alert('Ваш ID: ' + user.id); };
+
+        // Сохраняем данные в браузере (временно)
+        localStorage.setItem('isLogged', 'true');
+        localStorage.setItem('userName', user.first_name);
+        
+        console.log('Пользователь вошел:', user);
+    }
+
+    // Проверка логина при загрузке страницы
+    window.onload = function() {
+        if(localStorage.getItem('isLogged') === 'true') {
+            const name = localStorage.getItem('userName');
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.innerHTML = `👤 ${name}`;
+            loginBtn.style.background = "rgba(255,255,255,0.05)";
+            loginBtn.style.border = "1px solid #30363d";
+        }
+    }
+
     function switchCurr(type) {
         document.getElementById('rub-btn').classList.toggle('active', type === 'rub');
         document.getElementById('usd-btn').classList.toggle('active', type === 'usd');
