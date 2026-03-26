@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENUKOW</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --card-bg: #141a26;
+            --accent-blue: #007bff;
+            --text-white: #ffffff;
+            --text-gray: #8b949e;
+            --green-badge: #00e676;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            margin: 0;
+            padding-bottom: 70px;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 20px; font-weight: 900; color: #00a2ff; letter-spacing: 1px; }
+        
+        .header-tools { display: flex; gap: 8px; align-items: center; }
+        .currency-switch { display: flex; background: #1c2230; border-radius: 6px; padding: 2px; }
+        .curr-btn { padding: 6px 12px; border: none; background: transparent; color: white; cursor: pointer; font-size: 14px; }
+        .curr-btn.active { background: var(--accent-blue); border-radius: 4px; }
+
+        .btn-login { 
+            background: var(--accent-blue); color: white; border: none; 
+            padding: 8px 14px; border-radius: 8px; font-weight: 600; 
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* GAMES SECTION */
+        .main-content { padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+        
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .game-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00c2ff 0%, #0085ff 100%);
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(0, 133, 255, 0.2);
+        }
+
+        .game-card h2 { margin: 0 0 8px 0; font-size: 22px; font-weight: 700; }
+        .game-card p { margin: 0 0 16px 0; color: var(--text-gray); font-size: 14px; line-height: 1.5; }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0, 230, 118, 0.1);
+            color: var(--green-badge);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* FOOTER & LINKS */
+        footer { padding: 30px 16px; text-align: center; }
+        .footer-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+        .footer-nav a { color: var(--text-gray); text-decoration: none; font-size: 12px; }
+        .support-btn { color: #00a2ff !important; font-weight: bold; }
+        .resp-18 { font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ALFACI BOTTOM BAR */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #8a4fff, #0085ff);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">MENUKOW</div>
+    <div class="header-tools">
+        <div class="currency-switch">
+            <button class="curr-btn active" id="rub-btn" onclick="switchCurr('rub')">₽</button>
+            <button class="curr-btn" id="usd-btn" onclick="switchCurr('usd')">$</button>
+        </div>
+        <button class="btn-login" onclick="alert('Вход через TG/Gmail')">➔ Войти</button>
+    </div>
+</header>
+
+<div class="main-content">
+    <!-- Блэкджек -->
+    <div class="game-card">
+        <div class="game-icon">🃏</div>
+        <h2>Блэкджек</h2>
+        <p>Набери 21 очко! Блэкджек сразу умножает ставку на 2.2x</p>
+        <div class="badge">x2.2 Blackjack</div>
+    </div>
+
+    <!-- Дайс -->
+    <div class="game-card">
+        <div class="game-icon">🎲</div>
+        <h2>Дайс</h2>
+        <p>Выбери свой процент и попробуй угадать число от 1 до 100!</p>
+        <div class="badge">До х99</div>
+    </div>
+
+    <!-- Мины -->
+    <div class="game-card">
+        <div class="game-icon">💣</div>
+        <h2>Мины</h2>
+        <p>Поле 5x5. Ставь ставку и количество мин до 24. Удачи!</p>
+        <div class="badge">Поле 5x5</div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-nav">
+        <a href="https://t.me">FAQ</a>
+        <a href="https://t.me">Соглашение</a>
+        <a href="https://t.me" class="support-btn">Поддержка</a>
+    </div>
+    <div class="resp-18">Играйте ответственно 18+</div>
+</footer>
+
+<div class="bottom-bar">
+    ⚡ Сделано на <b>AlfaCl</b>
+</div>
+
+<script>
+    function switchCurr(type) {
+        document.getElementById('rub-btn').classList.toggle('active', type === 'rub');
+        document.getElementById('usd-btn').classList.toggle('active', type === 'usd');
+    }
+</script>
+
+</body>
+</html>
