@@ -24,6 +24,7 @@
             overflow-x: hidden;
         }
 
+        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -46,9 +47,9 @@
             background: var(--accent-blue); color: white; border: none; 
             padding: 8px 16px; border-radius: 8px; font-weight: 600; 
             display: flex; align-items: center; gap: 5px; cursor: pointer;
-            transition: 0.2s;
         }
 
+        /* GAMES SECTION */
         .main-content { padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
         
         .game-card {
@@ -84,6 +85,7 @@
             font-weight: 700;
         }
 
+        /* MODAL AUTH */
         #authModal {
             display: none;
             position: fixed;
@@ -155,13 +157,14 @@
     </div>
 </div>
 
+<!-- ОКНО ВХОДА -->
 <div id="authModal">
     <div class="modal-content">
         <h2 style="margin-top:0;">Авторизация</h2>
         <p style="color:var(--text-gray); font-size: 14px; margin-bottom: 25px;">Войдите через Telegram для сохранения баланса</p>
         
-        <div id="tg-widget">
-            <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
+        <!-- ТУТ ТЕПЕРЬ ПОЯВИТСЯ КНОПКА -->
+        <div id="tg-widget-area" style="display: flex; justify-content: center;">
             <script async src="https://telegram.org" 
                 data-telegram-login="MenukowBot" 
                 data-size="large" 
@@ -196,10 +199,10 @@
         loginBtn.innerHTML = `👤 ${user.first_name}`;
         loginBtn.style.background = "rgba(255,255,255,0.05)";
         loginBtn.style.border = "1px solid #30363d";
-        loginBtn.onclick = function() { alert('Ваш ID: ' + user.id); };
-
+        
         localStorage.setItem('isLogged', 'true');
         localStorage.setItem('userName', user.first_name);
+        alert('Вы вошли как ' + user.first_name);
     }
 
     window.onload = function() {
